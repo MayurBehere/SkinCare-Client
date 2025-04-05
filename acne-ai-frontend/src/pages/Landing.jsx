@@ -1,88 +1,136 @@
-// import { AppBar, Toolbar, Button, Container, Typography, Box, Grid } from "@mui/material";
-import { styled } from "@mui/system";
 import { useNavigate, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
-
-
+import { Tilt } from '@/components/ui/tilt';
 import Navbar from "../custom/Navbar"
+import Footer from "@/components/ui/Footer";
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import { testimonials } from "@/utils/testimonials";
 
 const Landing = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="mx-8 sm:mx-8 md:mx-16 lg:mx-[16vw]">
-      {/* Navbar */}
-      {/* <AppBar position="fixed" color="default" elevation={1}>
-        <Container>
-          <Toolbar style={{ justifyContent: "space-between" }}>
-            <img src="/logo.png" alt="Logo" style={{ height: 32 }} />
-            <Box style={{ display: "flex", gap: "24px" }}>
-              {['Home', 'About', 'How It Works', 'Contact'].map((item) => (
-                <Button key={item} color="inherit">{item}</Button>
-              ))}
-              <Button variant="contained" color="primary" onClick={handleGetStarted}>Get Started</Button>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar> */}
+    <div className="mx-8 sm:mx-8 md:mx-16 lg:mx-[16vw] font-sfpro">
       <Navbar />
-      {/* <div className="flex items-center justify-center">
-        <h1 className="absolute bg-white text-4xl p-12 top-60 font-bold">Acne-AI <br />Your AI acne treatment assistant</h1>
-        <div className="m-16 w-[60vw] grid grid-cols-12 grid-rows-8 bg-white">
-        {Array.from({ length: 84 }, (_, i) => (
-          <div
-            key={i}
-            className="aspect-square bg-white border-[0.5px] border-separate border-black"
-          ></div>
-        ))}
-        </div>
-      </div> */}
-
-      {/* <div className="relative flex items-center justify-center mt-16 mx-8">
-        <div className="relative">
-          <img src={heroImage} alt="herobg" className="object-cover"/>
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center pb-[10%]">
-          <div className="text-left">
-            <h1 className="text-[2rem] sm:text-[5rem] md:text-[10rem] font-sfpro font-bold text-black">Acne-AI</h1>
-            <h2 className="text-[1rem] sm:text-2xl md:text-3xl font-sfpro md:font-bold sm:font-medium text-black">
-            Your AI acne treatment assistant.
-          </h2>
-          </div>
-          
-        </div>
-      </div> */}
-      {/* <div className="h-[40rem] w-full rounded-md flex md:items-center md:justify-center lg:max-h-full md:max-h-full max-h-[30vh] bg-white antialiased bg-grid-white/[0.02] relative overflow-hidden">
-        <div className=" p-4 max-w-7xl  mx-auto relative z-10  w-full pt-20 md:pt-0">
-          <h1 className="text-4xl md:text-7xl font-sfpro font-bold text-center bg-clip-text text-black">
-            Acne-AI
-          </h1>
-          <p className="mt-4 font-sfpro text-xl md:text-4xl text-black max-w-lg text-center mx-auto">
-            Your AI skincare companion.
-          </p>
-        </div>
-      </div> */}
-      <section className="mt-24 grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="flex flex-col items-center justify-center">
-          <h1 className="text-4xl md:text-7xl font-sfpro font-bold text-black">
+      <section className="mt-24 gap-8">
+        <div className="absolute top-2/5 left-2/4 w-[40vw] h-[30vw] md:w-[24vw] md:h-[20vw] lg:w-[20vw] lg:h-[12vw] bg-[#1964FF] rounded-full blur-3xl opacity-75 md:opacity-50"></div>
+        <div className="absolute top-3/5 left-1/4 w-[40vw] h-[30vw] md:w-[28vw] md:h-[20vw] lg:w-[20vw] lg:h-[16vw] bg-[#FFB997] rounded-full blur-3xl opacity-75 md:opacity-50"></div>
+        <div className="mt-[32vh] flex flex-col items-center justify-center">
+          <h1 className="text-4xl md:text-7xl font-bold text-black">
             Acne-AI
           </h1>
           <p className="mt-2 font-sfpro font-bold text-xl md:text-4xl text-black mx-auto">
           Your AI acne treatment assistant.
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-gray-100 rounded-xl p-4">
-            g1
-          </div>
-          <div className="bg-gray-100 rounded-xl p-4">
-            g2
-          </div>
-          <div className="bg-gray-100 rounded-xl p-4">
-            g3
+      </section>
+
+      <section className="mt-[36vh]">
+        <div>
+          <h1 className="mb-8 font-bold text-2xl md:text-4xl text-black">What is AcneAi?</h1>
+          <p className="text-lg">
+          AcneAI is more than just a tool—it’s your personal skincare revolution. Powered by state-of-the-art 
+          artificial intelligence, our platform detects acne with unmatched precision, analyzing your skin to 
+          uncover its unique story. From there, we craft tailored treatment plans, blending cutting-edge tech 
+          with dermatological know-how to target your specific needs. Whether it’s stubborn breakouts or subtle 
+          blemishes, AcneAI delivers evidence-based solutions you can trust, right at your fingertips. Say goodbye 
+          to one-size-fits-all fixes and hello to a smarter, more confident you. Transform your skin, transform 
+          your journey—start with AcneAI today.
+          </p>
+        </div>
+        
+      </section>
+
+      <section className="mt-[12vh]">
+        <div className="relative md:top-6 lg:top-10 w-full">
+          <h1 className="text-[8vw] md:text-[7vw] font-bold text-gray-300 md:text-gray-200 text-center">Why use our platform?</h1>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Tilt rotationFactor={8} isRevese>
+              <div
+                style={{
+                  borderRadius: '12px',
+                }}
+                className='mx-auto flex max-w-[270px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900'
+              >
+                <img
+                  src='https://cdn.cosmos.so/f639bdf5-e4ab-4240-b25e-7d08c6cb7f90?format=jpeg'
+                  alt='1'
+                  className='h-48 w-full object-cover'
+                />
+                <div className='p-2'>
+                  <h1 className='leading-snug text-zinc-950 dark:text-zinc-50'>
+                    1.
+                  </h1>
+                  <p className='text-zinc-700 dark:text-zinc-400'>Easy and accurate identification using modern AI technologies.</p>
+                </div>
+              </div>
+          </Tilt>
+          <Tilt rotationFactor={8} isRevese>
+              <div
+                style={{
+                  borderRadius: '12px',
+                }}
+                className='mx-auto flex max-w-[270px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900'
+              >
+                <img
+                  src='https://cdn.cosmos.so/f0ca7356-faf1-4e0e-990d-75746b010903?format=jpeg'
+                  alt='2'
+                  className='h-48 w-full object-cover'
+                />
+                <div className='p-2'>
+                  <h1 className='leading-snug text-zinc-950 dark:text-zinc-50'>
+                    2.
+                  </h1>
+                  <p className='text-zinc-700 dark:text-zinc-400'>Robust treatment plans catered towards your personal needs.</p>
+                </div>
+              </div>
+          </Tilt>
+          <Tilt rotationFactor={8} isRevese>
+              <div
+                style={{
+                  borderRadius: '12px',
+                }}
+                className='mx-auto flex max-w-[270px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900'
+              >
+                <img
+                  src='https://cdn.cosmos.so/80eafb90-950e-4f0e-8404-ee1096509a83?format=jpeg'
+                  alt='3'
+                  className='h-48 w-full object-cover'
+                />
+                <div className='p-2'>
+                  <h1 className='leading-snug text-zinc-950 dark:text-zinc-50'>
+                    3.
+                  </h1>
+                  <p className='text-zinc-700 dark:text-zinc-400'>Progress monitoring and tracking for lasting results.</p>
+                </div>
+              </div>
+          </Tilt>
+        </div>
+      </section>
+      
+      <section className="mt-[24vh] mb-[8vh]">
+        <div>
+          <h1 className="mb-8 font-bold text-2xl md:text-4xl text-black">
+            Our testimonials
+          </h1>
+          <div className="h-[20rem] rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+            <InfiniteMovingCards
+              items={testimonials}
+              direction="right"
+              speed="slow"
+            />
           </div>
         </div>
       </section>
+
+      <div className="h-[2px] bg-gray-200 rounded-full mt-16"></div>
+
+      <div className="pt-12">
+        <Footer />
+      </div>
+      
     </div>
   );
 };

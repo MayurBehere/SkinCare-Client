@@ -60,7 +60,7 @@ const LoggedInNavbar = () => {
       <nav className="flex items-center justify-between">
         {/* LOGO */}
         <div className="flex items-center">
-          <Link to="/" className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <img
               src={logo}
               alt="logo"
@@ -69,7 +69,7 @@ const LoggedInNavbar = () => {
             <p className="font-semibold text-sm sm:text-base md:text-lg">
               Acne-AI
             </p>
-          </Link>
+          </div>
         </div>
 
         {/* Hamburger Menu for Mobile */}

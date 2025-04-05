@@ -2,9 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios"; // Import axios
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ChevronLeft } from "lucide-react"
-import { FcGoogle } from "react-icons/fc";
+import { Input } from "@/components/ui/Input"
 // import { auth, googleProvider } from "../firebase";
 // import { signInWithPopup } from "firebase/auth";
 
@@ -33,34 +31,6 @@ const ForgotPassword = () => {
   };
 
   return (
-    // <Container maxWidth="sm">
-    //   <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 8 }}>
-    //     <Typography variant="h4" component="h1" gutterBottom>
-    //       Forgot Password
-    //     </Typography>
-    //     {message && <Alert severity="success">{message}</Alert>}
-    //     {error && <Alert severity="error">{error}</Alert>}
-    //     <TextField
-    //       margin="normal"
-    //       required
-    //       fullWidth
-    //       id="email"
-    //       label="Email Address"
-    //       name="email"
-    //       autoComplete="email"
-    //       autoFocus
-    //       onChange={(e) => setEmail(e.target.value)}
-    //     />
-    //     <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }} onClick={handlePasswordReset}>
-    //       Reset Password
-    //     </Button>
-    //     <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-    //       <Link to="/login" variant="body2">
-    //         {"Remembered your password? Sign In"}
-    //       </Link>
-    //     </Box>
-    //   </Box>
-    // </Container>
     <div className="flex items-center justify-center min-h-screen w-full font-sfproMed px-4">
     <div className="relative flex flex-col items-center bg-gray-100 border rounded-xl px-10 lg:px-24 pt-20 pb-10 w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]">
 
