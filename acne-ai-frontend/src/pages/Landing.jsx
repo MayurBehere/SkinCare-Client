@@ -1,6 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button"
 import { Tilt } from '@/components/ui/tilt';
 import Navbar from "../custom/Navbar"
 import Footer from "@/components/ui/Footer";
