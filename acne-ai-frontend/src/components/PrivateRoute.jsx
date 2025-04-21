@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Replace with your actual auth context
+
+import PropTypes from "prop-types";
 
 const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
@@ -13,6 +15,10 @@ const PrivateRoute = ({ children }) => {
   }, [currentUser, navigate]);
 
   return currentUser ? children : null; // Render children if authenticated
+};
+
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default PrivateRoute;
