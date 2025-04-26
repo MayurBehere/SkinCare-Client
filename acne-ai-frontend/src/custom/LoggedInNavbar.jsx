@@ -87,7 +87,14 @@ const LoggedInNavbar = () => {
           {navItems.map((item, index) => (
             <div key={index}>
               <Link to={item.path}>
-                <Button variant={item.variant}>
+                <Button variant={item.variant}
+                  onClick={() => {
+                    // clear everything
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    window.location.href = item.path;
+                  }}
+                >
                   {item.label}
                 </Button>
               </Link>
@@ -114,7 +121,6 @@ const LoggedInNavbar = () => {
               >
                 <FiX />
               </button>
-
               {/* Mobile Menu Items */}
               <div className="flex flex-col items-center gap-4">
                 {navItems.map((item, i) => (
