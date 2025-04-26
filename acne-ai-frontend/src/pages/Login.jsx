@@ -103,11 +103,11 @@ const Login = () => {
           </div>
 
           {/* Google Sign In Button */}
-          <div className="mt-4 w-full max-w-[500px] sm:max-w-[600px]"> 
+          {/* <div className="mt-4 w-full max-w-[500px] sm:max-w-[600px]"> 
             <Button variant="outline" onClick={handleGoogleSignIn} className="w-full flex items-center justify-center gap-3 py-3">
               <FcGoogle /> Sign in with Google
             </Button>
-          </div>
+          </div> */}
 
           {error && (
             <p className="text-red-500 bg-red-50 py-2 border border-red-200 rounded-md text-center font-medium text-sm mt-4">
