@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import logo from "../images/logo.svg";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
@@ -6,9 +6,9 @@ import { FiMenu, FiX } from "react-icons/fi"; // For hamburger menu icons
 import { motion, AnimatePresence } from "framer-motion"; // For animations
 
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
+  // Avatar,
+  // AvatarFallback,
+  // AvatarImage,
 } from "@/components/ui/avatar"
 
 const LoggedInNavbar = () => {
@@ -49,9 +49,6 @@ const LoggedInNavbar = () => {
   };
 
   const navItems = [
-    { label: "How it works?", path: "/how-it-works", variant: "ghost" },
-    { label: "About", path: "/about", variant: "ghost" },
-    { label: "History", path: "/contact", variant: "ghost" },
     { label: "Logout", path: "/login", variant: "default" },
   ];
 
