@@ -163,20 +163,18 @@ const SessionPage = () => {
     }
   };
 
-
-
   return (
     <div className="mx-8 sm:mx-8 md:mx-16 lg:mx-[16vw] font-sfpro">
       <LoggedInNavbar />
       <div className="mt-10 md:mt-20">
         <h1 className="font-bold text-xl md:text-4xl">Upload</h1>
       </div>
+      {uploading && (
+        <TextShimmerWave className="font-mono text-sm" duration={1}>
+          Generating your report...
+        </TextShimmerWave>
+      )}
       <div className="flex items-center justify-center w-full mt-4 md:mt-10">
-        {uploading && (
-          <TextShimmerWave className="font-mono text-sm" duration={1}>
-            Generating your report...
-          </TextShimmerWave>
-        )}
         <div className="mt-8 bg-gray-50 h-full w-full flex flex-col items-center justify-center py-16 rounded-md border">
           {loading ? (
             <div className="w-full flex justify-center">
@@ -185,14 +183,8 @@ const SessionPage = () => {
           ) : sessionInfo && classificationResult ? (
             <div className="w-full px-6">
               <div className="text-center mb-6">
-                <p className="text-xl font-medium">
-                  {sessionInfo.session_name}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Created on:&nbsp;
-                  <span className="font-medium text-gray-700">
-                    {sessionInfo.created_at}
-                  </span>
+                <p className="text-xl font-bold mb-2">
+                  Session Name: {sessionInfo.session_name}
                 </p>
               </div>
 
@@ -222,16 +214,13 @@ const SessionPage = () => {
                   <li>
                     <strong>Acne Type:</strong>{" "}
                     {classificationResult.acne_type === "Acne"
-                      ? "Folliculitis"
+                      ? "Comedonal/Folleculitis"
                       : classificationResult.acne_type ||
                         classificationResult.classification}
                   </li>
                   <li>
                     <strong>Confidence:</strong>{" "}
-                    {((classificationResult.confidence || 0) * 100).toFixed(
-                      2
-                    )}
-                    %
+                    {((classificationResult.confidence || 0) * 100).toFixed(2)}%
                   </li>
                   <li>
                     <strong>Recommendations:</strong>{" "}
@@ -240,10 +229,6 @@ const SessionPage = () => {
                 </ul>
               </div>
 
-              <p className="text-lg text-gray-500 mt-4">
-                These are some of the dermatologists you can consider if the
-                problem persists.
-              </p>
               <button
                 className="mt-4 bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 disabled:bg-indigo-300"
                 onClick={fetchDermatologists}
@@ -253,7 +238,6 @@ const SessionPage = () => {
                   ? "Loading..."
                   : "Find Nearby Dermatologists"}
               </button>
-             
 
               {locationError && (
                 <div className="mt-4 p-3 bg-red-100 text-red-700 rounded">
@@ -263,37 +247,49 @@ const SessionPage = () => {
 
               {dermatologists.length > 0 && (
                 <div className="mt-8">
-                  <h4 className="font-semibold mb-4 text-xl">
-                    Nearest Dermatologists:
-                  </h4>
+                  
                   <div className="flex overflow-x-auto space-x-4 pb-4">
-                    {dermatologists.map((doc, idx) => {
-                      const googleMapsLink = `https://www.google.com/maps/place/?q=place_id:${doc.place_id}`;
-                      return (
-                        <a
-                          key={idx}
-                          href={googleMapsLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="min-w-[220px] max-w-[250px] bg-white rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 flex-shrink-0"
-                        >
-                          <div className="p-4">
-                            <h5 className="font-semibold text-lg truncate">
-                              {doc.name}
-                            </h5>
-                            <p className="text-sm text-gray-600">
-                              {doc.distance_km} km away
-                            </p>
-                            <div className="flex items-center text-yellow-500 text-sm mt-1">
-                              ★ {doc.rating}
-                              <span className="text-gray-500 ml-1">
-                                ({doc.user_ratings_total})
-                              </span>
-                            </div>
-                          </div>
-                        </a>
-                      );
-                    })}
+                    {dermatologists.length > 0 && (
+                      <div className="mt-8">
+                        <h4 className="font-semibold mb-4 text-xl">
+                          Nearest Dermatologists:
+                        </h4>
+                        <div className="flex overflow-x-auto space-x-4 pb-4">
+                          {dermatologists.map((doc, idx) => {
+                            const googleMapsLink = `https://www.google.com/maps/place/?q=place_id:${doc.place_id}`;
+                            return (
+                              <a
+                                key={idx}
+                                href={googleMapsLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="min-w-[220px] max-w-[250px] bg-white rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 flex-shrink-0"
+                              >
+                                <div className="p-4">
+                                  <h5 className="font-semibold text-lg truncate">
+                                    {doc.name}
+                                  </h5>
+                                  <p className="text-sm text-gray-600">
+                                    {doc.distance_km} km away
+                                  </p>
+                                  <div className="flex items-center text-yellow-500 text-sm mt-1">
+                                    ★ {doc.rating}
+                                    <span className="text-gray-500 ml-1">
+                                      ({doc.user_ratings_total})
+                                    </span>
+                                  </div>
+                                </div>
+                              </a>
+                            );
+                          })}
+                        </div>
+                        {/* Show this only after clicking button and having results */}
+                        <p className="text-lg text-gray-500 mt-4">
+                          These are some of the dermatologists you can consider
+                          if the problem persists.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
