@@ -28,7 +28,7 @@ const Login = () => {
   
       console.log("✅ Backend response:", response.data);
       setCurrentUser(response.data.uid);
-      navigate("/main");
+      navigate("/dashboard");
     } catch (err) {
       console.error("❌ Error sending user to backend:", err);
       setError(err.response?.data?.error || "Failed to authenticate");

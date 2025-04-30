@@ -6,8 +6,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input";
+import toast from "react-hot-toast";
 
-function Main() {
+function Dashboard() {
   const navigate = useNavigate();
   const auth = getAuth();
 
@@ -17,10 +18,13 @@ function Main() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // dialog state
+  const [openSessionDialog, setOpenSessionDialog] = useState(false);
+  const [newSessionName, setNewSessionName] = useState("");
+
   useEffect(() => {
     const initUser = async () => {
       const storedUser = JSON.parse(localStorage.getItem("user"));
-
       if (storedUser && Date.now() - storedUser.timestamp < 10 * 60 * 1000) {
         setUser(storedUser);
         await fetchUser(storedUser.uid);
@@ -35,7 +39,6 @@ function Main() {
             };
             localStorage.setItem("user", JSON.stringify(userData));
             setUser(userData);
-
             await fetchUser(currentUser.uid);
             fetchSessions(currentUser.uid);
           } else {
@@ -44,7 +47,6 @@ function Main() {
         });
       }
     };
-
     initUser();
   }, [auth, navigate]);
 
@@ -55,15 +57,13 @@ function Main() {
         "http://127.0.0.1:5000/auth/check-user-info",
         { uid }
       );
-
       const fetchedName = response.data.name;
-
-      setUser((prev) => ({
-        ...prev,
-        name: fetchedName || prev.name,
-      }));
-
-      if (!fetchedName || fetchedName.trim() === "" || fetchedName.trim().toLowerCase() === "unknown") {
+      setUser((prev) => ({ ...prev, name: fetchedName || prev.name }));
+      if (
+        !fetchedName ||
+        fetchedName.trim() === "" ||
+        fetchedName.trim().toLowerCase() === "unknown"
+      ) {
         setName("");
         setShowNameForm(true);
       } else {
@@ -79,88 +79,82 @@ function Main() {
   const fetchSessions = async (uid) => {
     try {
       if (!uid) return;
-
-      setSessions([]); // clear while loading
+      setSessions([]);
       const response = await axios.get(
         "http://127.0.0.1:5000/session/get-sessions",
         { params: { uid } }
       );
-
       setSessions(response.data.sessions || []);
     } catch (error) {
       console.error("Error fetching sessions:", error);
-      alert("Failed to load sessions.");
+      toast.error("Failed to load sessions.");
     }
   };
 
-  const handleNewSession = async () => {
+  const handleNewSession = () => {
+    setNewSessionName("");
+    setOpenSessionDialog(true);
+  };
+
+  const confirmNewSession = async () => {
+    if (!newSessionName.trim()) {
+      toast.error("Session name cannot be empty.");
+      return;
+    }
     try {
       const currentUser = auth.currentUser;
-      const sessionName = prompt("Enter a unique name for this session:");
-      if (!sessionName) {
-        alert("Session name cannot be empty.");
-        return;
-      }
-
       const response = await axios.post(
         "http://127.0.0.1:5000/session/start-session",
-        {
-          uid: currentUser.uid,
-          session_name: sessionName,
-        }
+        { uid: currentUser.uid, session_name: newSessionName }
       );
-
       const sessionId = response.data.session_id;
       fetchSessions(currentUser.uid);
-
+      setOpenSessionDialog(false);
       navigate(`/session/${sessionId}`, { state: { uid: currentUser.uid } });
     } catch (error) {
       console.error("Error creating session", error);
+      toast.error("Failed to create session.");
     }
   };
 
   const deleteSession = async (sessionId) => {
     try {
-      await axios.delete(`http://127.0.0.1:5000/session/delete-session/${sessionId}`);
-      setSessions(sessions.filter((session) => session.session_id !== sessionId));
+      await axios.delete(
+        `http://127.0.0.1:5000/session/delete-session/${sessionId}`
+      );
+      setSessions((s) =>
+        s.filter((session) => session.session_id !== sessionId)
+      );
+      toast.success("Session deleted successfully");
     } catch (error) {
       console.error("Error deleting session", error);
+      toast.error("Failed to delete session.");
     }
   };
 
   const handleNameSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!name || name.trim() === "") {
-      alert("Please enter your name to continue.");
+    if (!name.trim()) {
+      toast.error("Please enter your name to continue.");
       return;
     }
-
     try {
       const currentUser = auth.currentUser;
-
       await axios.post("http://127.0.0.1:5000/auth/update-name", {
         uid: currentUser.uid,
-        name: name,
+        name,
       });
-
-      // Update local user state
-      setUser((prev) => ({ 
-        ...prev, 
-        name 
-      }));
-      
-      // Update localStorage
+      setUser((prev) => ({ ...prev, name }));
       const storedUser = JSON.parse(localStorage.getItem("user"));
-      localStorage.setItem("user", JSON.stringify({
-        ...storedUser,
-        name
-      }));
-      
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...storedUser, name })
+      );
       setShowNameForm(false);
       fetchUser(currentUser.uid);
     } catch (error) {
       console.error("Error updating name", error);
+      toast.error("Failed to update name.");
     }
   };
 
@@ -172,25 +166,16 @@ function Main() {
     );
   }
 
-  // Show the Name component when name is needed
   if (showNameForm) {
     return (
       <div className="flex items-center justify-center min-h-screen w-full font-sfproMed px-4">
-        <div className="relative flex flex-col items-center bg-gray-100 border rounded-xl px-10 lg:px-24 pt-20 pb-10 w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]">
+        <div className="relative flex flex-col items-center bg-gray-100 border rounded-xl px-10 lg:px-24 pt-20 pb-10 w-full max-w-[600px]">
           <form onSubmit={handleNameSubmit} className="w-full">
-            {/* Title */}
-            <div className="flex items-center justify-center">
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-                Welcome {name ? name : ""}
-              </h1>
-            </div>
-
-            <div className="mt-8 text-center">
-              <h2>Please enter your name to continue</h2>
-            </div>
-          
-            {/* Input Fields */}
-            <div className="flex flex-col items-center justify-center w-full max-w-[500px] sm:max-w-[600px] mt-4 gap-5">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-center">
+              Welcome {name}
+            </h1>
+            <p className="mt-4 text-center">Please enter your name to continue</p>
+            <div className="mt-6">
               <Input
                 type="text"
                 placeholder="Name"
@@ -200,10 +185,10 @@ function Main() {
                 required
               />
             </div>
-      
-            {/* Register Button */}
-            <div className="mt-6 mb-8 w-full max-w-[500px] sm:max-w-[600px]">
-              <Button type="submit" className="w-full py-3">Continue</Button>
+            <div className="mt-6">
+              <Button type="submit" className="w-full">
+                Continue
+              </Button>
             </div>
           </form>
         </div>
@@ -211,11 +196,10 @@ function Main() {
     );
   }
 
-  // Show the main content when user has a name
   return (
-    <div className="mx-8 sm:mx-8 md:mx-16 lg:mx-[16vw] font-sfpro">
+    <div className="mx-8 md:mx-16 lg:mx-[16vw] font-sfpro">
       <LoggedInNavbar />
-
+      
       <section className="mt-[8vh]">
         <button
           onClick={handleNewSession}
@@ -226,7 +210,7 @@ function Main() {
         </button>
       </section>
 
-      <div className="h-[2px] bg-gray-200 mt-8"></div>
+      <div className="h-[2px] bg-gray-200 mt-8" />
 
       <section>
         {sessions.length > 0 ? (
@@ -255,15 +239,33 @@ function Main() {
             ))}
           </div>
         ) : (
-          <div>
-            <h1 className="text-7xl font-bold text-center text-gray-200 mt-[16vh]">
-              Create a session to begin
-            </h1>
-          </div>
+          <h1 className="text-7xl font-bold text-center text-gray-200 mt-[16vh]">
+            Create a session to begin
+          </h1>
         )}
       </section>
+
+      {openSessionDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg w-[90%] max-w-md">
+            <h2 className="text-xl mb-4">Enter Session Name</h2>
+            <Input
+              value={newSessionName}
+              onChange={(e) => setNewSessionName(e.target.value)}
+              placeholder="Session name"
+              className="w-full mb-4"
+            />
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={() => setOpenSessionDialog(false)}>
+                Cancel
+              </Button>
+              <Button onClick={confirmNewSession}>Create</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default Main;
+export default Dashboard;
