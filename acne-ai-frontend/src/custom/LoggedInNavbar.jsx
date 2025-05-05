@@ -64,7 +64,7 @@ const LoggedInNavbar = () => {
               className="h-4 sm:h-4 md:h-4 w-auto"
             />
             <p className="font-semibold text-sm sm:text-base md:text-lg">
-              Acne-AI
+              Derma-AI
             </p>
           </div>
         </div>

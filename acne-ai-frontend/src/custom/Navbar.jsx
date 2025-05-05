@@ -45,8 +45,6 @@ const Navbar = () => {
   const navItems = [
     { label: "Home", path: "/", variant: "ghost" },
     { label: "About", path: "/about", variant: "ghost" },
-    { label: "How it works?", path: "/how-it-works", variant: "ghost" },
-    { label: "Contact", path: "/contact", variant: "ghost" },
     { label: "Get started", path: "/login", variant: "default" },
   ];
 
@@ -62,7 +60,7 @@ const Navbar = () => {
               className="h-4 sm:h-4 md:h-4 w-auto"
             />
             <p className="font-semibold text-sm sm:text-base md:text-lg">
-              Acne-AI
+              Derma-AI
             </p>
           </Link>
         </div>
